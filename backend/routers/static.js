@@ -9,4 +9,10 @@ staticRouter.get("/login", (req, res) => {
   });
 });
 
+staticRouter.get("/register", (req, res) => {
+  res.sendFile("register.html", {
+    root: path.join(__dirname, "..", "..", "./frontend")
+  });
+});
+
 module.exports = staticRouter;
