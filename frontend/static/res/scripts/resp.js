@@ -39,3 +39,4 @@ $(window).on("resize", function() {
     }
   }
 });
+  

@@ -1,7 +1,5 @@
 const path = require("path");
 const express = require("express");
-
-
 const staticRouter = express.Router();
 
 staticRouter.use(express.static('../static')); // <- ia doar fisierele din static
@@ -19,7 +17,7 @@ staticRouter.get("/register", (req, res) => {
 });
 
 staticRouter.get("*", function(req, res){
-  res.send('NOT FOUND', 404);
+  res.status(404).send('NOT FOUND');
 });
 
 module.exports = staticRouter;
