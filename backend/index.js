@@ -4,7 +4,6 @@ const validator = require("validator");
 const db = require("./db/db");
 
 const userRouter = require("./routers/user");
-const staticRouter = require("./routers/static");
 
 const port = process.env.PORT || 6969;
 const dbUrl = process.env.DBURL;
@@ -28,6 +27,5 @@ app.use("/*", function(req, res, next) {
 });
 
 app.use(userRouter);
-app.use(staticRouter);
 
 app.listen(port, () => console.log(`Server running on port ${port}`));
