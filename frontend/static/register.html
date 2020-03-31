@@ -63,7 +63,7 @@
             class="uk-input"
             type="text"
             placeholder="Username"
-            id="username"
+            name="username"
           />
         </div>
         <div class="uk-width-1-2@s">
@@ -74,7 +74,7 @@
             class="uk-input"
             type="password"
             placeholder="Password"
-            id="password"
+            name="password"
           />
         </div>
         <div class="uk-width-1-2@s">
@@ -82,7 +82,7 @@
             class="uk-input"
             type="password"
             placeholder="Confirm Password"
-            id="confirm_password"
+            name="confirm_password"
           />
         </div>
         <div class="uk-width-1-3@s">
@@ -90,12 +90,12 @@
             class="uk-input"
             type="tel"
             placeholder="Telephone"
-            id="telephone"
+            name="telephone"
           />
         </div>
 
         <div class="uk-form-controls uk-width-1-3@s" id="country_div">
-          <select id="country" name="country" class="form-control uk-select">
+          <select name="country" name="country" class="form-control uk-select">
             <option value="" disabled selected hidden>Country</option>
             <option value="Afghanistan">Afghanistan</option>
             <option value="Åland Islands">Åland Islands</option>
@@ -396,7 +396,7 @@
           </select>
         </div>
         <div class="uk-width-1-3@s">
-          <input class="uk-input" type="text" placeholder="City" id="city" />
+          <input class="uk-input" type="text" placeholder="City" name="city" />
         </div>
 
         <div class="uk-width-1-2@s">
@@ -404,7 +404,7 @@
             class="uk-input"
             type="text"
             placeholder="Street"
-            id="street"
+            name="street"
           />
         </div>
 
@@ -413,18 +413,17 @@
             class="uk-input"
             type="text"
             placeholder="House number"
-            id="number"
+            name="number"
           />
         </div>
 
         <div class="uk-width-1-4@s">
-          <input class="uk-input" type="text" placeholder="Zipcode" id="zip" />
+          <input class="uk-input" type="text" placeholder="Zipcode" name="zip" />
+        </div>
+        <div>
+          <input id="submit" type="submit" value="Submit" class="uk-button uk-margin  uk-button-primary">
         </div>
       </form>
-
-      <button class="uk-button uk-margin uk-button-primary">
-        Submit
-      </button>
 
       <p class="uk-text-small">
         Have an account already? <a class href="/login">Sign in</a>
