@@ -7,15 +7,10 @@ const port = process.env.PORT || 6969;
 const dbUrl = process.env.DBURL;
 const corsUrl = process.env.CORS;
 
-//connect to the database
-async () => {
-  try {
-    await db.connect(dbUrl);
-  } catch (error) {
-    console.log(error);
-    process.exit(1); //do not proceed without an actual connection to the db
-  }
-};
+db.connect(dbUrl).catch(() => {
+  console.log("::::Error during connection to the database." + dbUrl);
+  process.exit(1);
+});
 
 const app = express();
 

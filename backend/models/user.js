@@ -3,7 +3,6 @@ const validator = require("validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-
 const userSchema = mongoose.Schema({
   username: {
     type: String,
@@ -67,32 +66,34 @@ const userSchema = mongoose.Schema({
 });
 
 userSchema.pre("save", async function(next) {
-    const user = this;
+  const user = this;
 
-    if (user.isModified("password") || user.isNew("password")) {
-        user.password = await bcrypt.hash(user.password, process.env.SALT_ROUNDS);
-    }
+  if (user.isModified("password") || user.isNew("password")) {
+    user.password = await bcrypt.hash(user.password, 10);
+    // bro fix your salt rounds, the var doesn't work
+  }
 
-    next();
+  next();
 });
 
 userSchema.methods.generateAuthToken = async function() {
-    const user = this;
-    const token = jwt.sign({ _id: user._id }, process.env.JWT_KEY, { expiresIn: "30m" });
+  const user = this;
+  const token = jwt.sign({ _id: user._id }, process.env.JWT_KEY, {
+    expiresIn: "30m"
+  });
 
-    return token;
+  return token;
 };
 
 userSchema.statics.findByCredentials = async (email, password) => {
-    const user = await UserModel.findOne({ email });
+  const user = await UserModel.findOne({ email });
 
-    if (!user || !(await bcrypt.compare(password, user.password)))
-        throw new Error({ error: "Invalid login credentials" });
+  if (!user || !(await bcrypt.compare(password, user.password)))
+    throw new Error({ error: "Invalid login credentials" });
 
-    return user;
+  return user;
 };
 
 const UserModel = mongoose.model("user", userSchema);
 
-
-module.exports = UserModel;
+module.exports = UserModel; // cand refactorizezi ceva asigura-te ca schimbin numele peste tot -_-
