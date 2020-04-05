@@ -2,7 +2,6 @@ const express = require("express");
 const UserModel = require("../models/user.js");
 const auth = require("../middleware/auth");
 
-
 const userRouter = express.Router();
 
 userRouter.post("/user/register", async (req, res) => {
@@ -44,6 +43,5 @@ userRouter.post("/user/login", async (req, res) => {
 userRouter.get("/user/status", auth, async (req, res) => {
     res.send(req.user);
 });
-
 
 module.exports = userRouter;

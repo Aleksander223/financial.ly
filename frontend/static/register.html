@@ -47,17 +47,19 @@
         </button>
         <div uk-dropdown="pos: top-right">
           <ul class="uk-nav uk-dropdown-nav">
-            <li class="uk-active"><a href="#">Login</a></li>
-            <li><a href="#">Register</a></li>
-            <li><a href="#">About</a></li>
-            <li><a href="#">Support</a></li>
+            <li class=""><a href="/">Home</a></li>
+            <li class=""><a href="/login">Login</a></li>
+            <li class="uk-active"><a href="/register">Register</a></li>
           </ul>
         </div>
       </div>
     </nav>
-    <div class="uk-position-center uk-padding-large uk-margin-large-top">
-      <form class="uk-grid-small uk-width-1-1" uk-grid>
-        <legend class="uk-legend">Register</legend>
+    <div
+      class="uk-padding-large uk-margin-large-top uk-flex-center uk-flex"
+      uk-grid
+    >
+      <form class="uk-grid-small uk-width-1-1 uk-width-1-2@m" uk-grid>
+        <legend class="uk-text-lead uk-legend">Register</legend>
         <div class="uk-width-1-2@s">
           <input
             class="uk-input"
@@ -421,19 +423,16 @@
           <input class="uk-input" type="text" placeholder="Zipcode" id="zip" />
         </div>
         <div>
-          <input id="submit" type="submit" value="Submit" class="uk-button uk-margin  uk-button-primary">
+          <input
+            id="submit"
+            type="submit"
+            value="Submit"
+            class="uk-button uk-margin  uk-button-primary"
+          />
         </div>
       </form>
-
-      <p class="uk-text-small">
+      <p class="uk-text-small uk-text-center uk-width-1-1">
         Have an account already? <a class href="/login">Sign in</a>
-      </p>
-    </div>
-
-    <div class="uk-position-bottom-center">
-      <p class="uk-text-meta">
-        Copyright 2020 - Adam Alexandru-Vlad, Curcan Stefan-Cosmin, Pinzariu
-        Iustin, Artenie Daniel
       </p>
     </div>
   </body>
