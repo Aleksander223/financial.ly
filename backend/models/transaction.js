@@ -11,10 +11,10 @@ const transactionSchema = new Schema(
             required: true,
             unique: false,
             trim: true
-          },
+        },
 
         to: {
-            type: NuSchema.Types.ObjectIdmber,
+            type: Schema.Types.ObjectId,
             ref:'user',
             required: true,
             unique: false,
@@ -23,7 +23,7 @@ const transactionSchema = new Schema(
 
         date: { 
             type: Date, 
-            default: Date.now() 
+            default: Date.now() // YYYY-MM-DD hh:mm:ss
         },
 
         amount:{
