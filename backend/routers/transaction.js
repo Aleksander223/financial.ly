@@ -5,8 +5,8 @@ const auth = require("../middleware/auth");
 const Transaction = require("../models/transaction.js");
 const transactionController = require("../services/tranzactionController");
 
-transactionRouter.get("/transactions", transactionController.getTransactions);
-transactionRouter.post("/createTransaction", transactionController.addTransactions);
-transactionRouter.post("/cancelTransaction", transactionController.cancelTransactions);
+transactionRouter.get("/transactions", auth, transactionController.getTransactions);
+transactionRouter.post("/createTransaction", auth, transactionController.addTransactions);
+transactionRouter.post("/cancelTransaction", auth, transactionController.cancelTransactions);
 
 module.exports = transactionRouter;
