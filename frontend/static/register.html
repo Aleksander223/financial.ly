@@ -13,10 +13,6 @@
     <!-- UIkit JS -->
     <script src="https://cdn.jsdelivr.net/npm/uikit@3.3.3/dist/js/uikit.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/uikit@3.3.3/dist/js/uikit-icons.min.js"></script>
-    <script src="uikit/dist/js/uikit-icons.min.js"></script>
-
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="res/style/resp.css" />
 
     <!-- Jquery -->
     <script
@@ -25,11 +21,16 @@
       crossorigin="anonymous"
     ></script>
 
+    <!-- Cookie -->
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+
     <!-- Custom scripts -->
+    <script src="/res/scripts/login.js"></script>
   </head>
 
   <body>
     <nav
+      data-uk-sticky
       class="uk-navbar-container uk-margin uk-light"
       uk-navbar
       style="background-color: #1e87f0;"
@@ -410,24 +411,16 @@
           />
         </div>
 
-        <div class="uk-width-1-4@s">
-          <input
-            class="uk-input"
-            type="text"
-            placeholder="House number"
-            id="number"
-          />
-        </div>
-
-        <div class="uk-width-1-4@s">
+        <div class="uk-width-1-2@s">
           <input class="uk-input" type="text" placeholder="Zipcode" id="zip" />
         </div>
         <div>
           <input
             id="submit"
-            type="submit"
+            type="button"
             value="Submit"
-            class="uk-button uk-margin  uk-button-primary"
+            onclick="sendRegister()"
+            class="uk-button uk-margin uk-button-primary"
           />
         </div>
       </form>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Financial.ly | Login</title>
+    <!-- UIkit CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/uikit@3.3.3/dist/css/uikit.min.css"
+    />
+
+    <!-- UIkit JS -->
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.3.3/dist/js/uikit.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.3.3/dist/js/uikit-icons.min.js"></script>
+
+    <!-- Jquery -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- Custom scripts -->
+    <script src="/res/scripts/login.js"></script>
+  </head>
+
+  <body>
+    <nav
+      class="uk-navbar-container uk-margin uk-light"
+      uk-navbar
+      data-uk-sticky
+      style="background-color: #1e87f0;"
+    >
+      <div class="uk-navbar-left">
+        <a class="uk-navbar-item uk-logo" href="#">financial.ly</a>
+      </div>
+
+      <div class="uk-navbar-right">
+        <button
+          class="uk-button uk-button-default uk-margin-right"
+          type="button"
+        >
+          <span uk-icon="menu"></span>
+        </button>
+        <div uk-dropdown="pos: top-right">
+          <ul class="uk-nav uk-dropdown-nav">
+            <li class="uk-active"><a href="/">Home</a></li>
+            <li class=""><a href="/login">Login</a></li>
+            <li><a href="/register">Register</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <h2>Logged in</h2>
+  </body>
+</html>

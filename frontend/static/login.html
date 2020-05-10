@@ -21,6 +21,9 @@
       crossorigin="anonymous"
     ></script>
 
+    <!-- Cookie -->
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+
     <!-- Custom scripts -->
     <script src="/res/scripts/login.js"></script>
   </head>
@@ -29,6 +32,7 @@
     <nav
       class="uk-navbar-container uk-margin uk-light"
       uk-navbar
+      data-uk-sticky
       style="background-color: #1e87f0;"
     >
       <div class="uk-navbar-left">
@@ -67,7 +71,7 @@
                 <input
                   class="uk-input uk-form-large"
                   type="text"
-                  placeholder="Username"
+                  placeholder="Email"
                   id="email"
                 />
               </div>
@@ -81,9 +85,10 @@
                 />
               </div>
               <input
-                type="submit"
-                value="Submit"
+                type="button"
+                value="Login"
                 class="uk-button uk-button-large uk-button-primary"
+                onclick="sendLogin()"
               />
             </fieldset>
           </form>

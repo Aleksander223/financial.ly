@@ -10,7 +10,7 @@ userRouter.post("/user/register", async (req, res) => {
     const user = new User({
       username: req.body.username,
       email: req.body.email,
-      password: req.body.password
+      password: req.body.password,
     });
     await user.save();
 
@@ -26,7 +26,7 @@ userRouter.post("/user/login", async (req, res) => {
   try {
     const email = req.body.email;
     const password = req.body.password;
-    const user = await UserModel.findByCredentials(email, password);
+    const user = await User.findByCredentials(email, password);
     if (!user) {
       res.status(401).send({ error: "Wrong credentials." });
     }

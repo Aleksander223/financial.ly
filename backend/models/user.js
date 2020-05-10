@@ -8,19 +8,19 @@ const userSchema = mongoose.Schema({
     type: String,
     required: true,
     unique: true,
-    trim: true
+    trim: true,
   },
   email: {
     type: String,
     required: true,
     unique: true,
-    trim: true
+    trim: true,
   },
   password: {
     type: String,
     required: true,
-    minLength: 7
-  }
+    minLength: 7,
+  },
   /*firstName: {
     username: {
         type: String,
@@ -65,7 +65,7 @@ const userSchema = mongoose.Schema({
     */
 });
 
-userSchema.pre("save", async function(next) {
+userSchema.pre("save", async function (next) {
   const user = this;
 
   if (user.isModified("password") || user.isNew("password")) {
@@ -76,10 +76,10 @@ userSchema.pre("save", async function(next) {
   next();
 });
 
-userSchema.methods.generateAuthToken = async function() {
+userSchema.methods.generateAuthToken = async function () {
   const user = this;
   const token = jwt.sign({ _id: user._id }, process.env.JWT_KEY, {
-    expiresIn: "30m"
+    expiresIn: "30m",
   });
 
   return token;
@@ -94,6 +94,6 @@ userSchema.statics.findByCredentials = async (email, password) => {
   return user;
 };
 
-const UserModel = mongoose.model("user", userSchema);
+const User = mongoose.model("user", userSchema);
 
-module.exports = UserModel; // cand refactorizezi ceva asigura-te ca schimbin numele peste tot -_-
+module.exports = User; // cand refactorizezi ceva asigura-te ca schimbin numele peste tot -_-

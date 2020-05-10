@@ -2,6 +2,7 @@ const express = require("express");
 const validator = require("validator");
 const db = require("./db/db");
 const userRouter = require("./routers/user");
+const cookieParser = require("cookie-parser");
 
 const port = process.env.PORT || 6969;
 const dbUrl = process.env.DBURL;
@@ -14,9 +15,10 @@ db.connect(dbUrl).catch(() => {
 
 const app = express();
 
+app.use(cookieParser());
 app.use(express.json());
 
-app.use("/*", function(req, res, next) {
+app.use("/*", function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
   res.header(
