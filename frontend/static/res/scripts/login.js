@@ -20,6 +20,7 @@ async function sendLogin() {
   console.log(res);
 
   Cookies.set("Authorization", "Bearer " + res.token);
+  window.location.replace("/");
 }
 
 async function sendRegister() {
