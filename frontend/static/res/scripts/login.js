@@ -1,3 +1,20 @@
+function deleteWarnings() {
+  $("#email").removeClass("uk-form-danger");
+  $("#password").removeClass("uk-form-danger");
+  $("#dangerText").addClass("uk-hidden");
+}
+
+$(document).ready(() => {
+  $("#email").click(() => {
+    console.log("hello");
+    deleteWarnings();
+  });
+
+  $("#password").click(() => {
+    deleteWarnings();
+  });
+});
+
 async function sendLogin() {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
@@ -17,10 +34,20 @@ async function sendLogin() {
 
   res = await response.json();
 
-  console.log(res);
+  if (response.status != 201) {
+    const el = $("#submitButton").get(0);
+    $("#submitButton").removeClass("animate__shakeX");
+    void el.offsetWidth;
+    el.style.setProperty("--animate-duration", "0.6s");
+    $("#submitButton").addClass("animate__shakeX");
 
-  Cookies.set("Authorization", "Bearer " + res.token);
-  window.location.replace("/");
+    $("#email").addClass("uk-form-danger");
+    $("#password").addClass("uk-form-danger");
+    $("#dangerText").removeClass("uk-hidden");
+  } else {
+    Cookies.set("Authorization", "Bearer " + res.token);
+    window.location.replace("/");
+  }
 }
 
 async function sendRegister() {
@@ -52,5 +79,7 @@ async function sendRegister() {
     body: JSON.stringify(data),
   });
 
-  console.log(await response.json());
+  res = await response.json();
+  Cookies.set("Authorization", "Bearer " + res.token);
+  window.location.replace("/");
 }

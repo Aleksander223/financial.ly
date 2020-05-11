@@ -39,7 +39,7 @@
         <a class="uk-navbar-item uk-logo" href="#">financial.ly</a>
       </div>
 
-      <div class="uk-navbar-right">
+      <div class="uk-navbar-right uk-hidden@s">
         <button
           class="uk-button uk-button-default uk-margin-right"
           type="button"
@@ -48,6 +48,15 @@
         </button>
         <div uk-dropdown="pos: top-right">
           <ul class="uk-nav uk-dropdown-nav">
+            <li class=""><a href="/">Home</a></li>
+            <li class="uk-active"><a href="/login">Login</a></li>
+            <li><a href="/register">Register</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="uk-navbar-right uk-visible@s">
+        <div>
+          <ul class="uk-navbar-nav">
             <li class=""><a href="/">Home</a></li>
             <li class=""><a href="/login">Login</a></li>
             <li class="uk-active"><a href="/register">Register</a></li>
