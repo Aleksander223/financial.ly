@@ -9,7 +9,7 @@ const auth = async (req, res, next) => {
     const token = req.cookies["Authorization"].replace("Bearer ", "");
     const data = jwt.verify(token, process.env.JWT_KEY);
     // const user = User.findOne({ _id: data._id });
-    let user = await User.findById(data._id);
+    const user = await User.findById(data._id);
 
     if (!user) {
       throw new Error({ error: "Not auth-ed" });
