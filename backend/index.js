@@ -3,7 +3,7 @@ const validator = require("validator");
 const db = require("./db/db.js");
 const userRouter = require("./routers/user.js");
 const cookieParser = require("cookie-parser");
-const cors = require;
+const cors = require("cors");
 
 const port = process.env.PORT || 6969;
 const dbUrl = process.env.DBURL;
@@ -23,7 +23,15 @@ async function main() {
   app.use(cookieParser());
   app.use(express.json());
 
-  app.use("/*", cors);
+  app.use(
+    cors({
+      origin: function (origin, callback) {
+        return callback(null, true);
+      },
+      optionsSuccessStatus: 200,
+      credentials: true,
+    })
+  );
 
   app.use(userRouter);
 
