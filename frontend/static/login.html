@@ -26,6 +26,12 @@
 
     <!-- Custom scripts -->
     <script src="/res/scripts/login.js"></script>
+
+    <!-- Animate.css -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"
+    />
   </head>
 
   <body>
@@ -39,7 +45,7 @@
         <a class="uk-navbar-item uk-logo" href="#">financial.ly</a>
       </div>
 
-      <div class="uk-navbar-right">
+      <div class="uk-navbar-right uk-hidden@s">
         <button
           class="uk-button uk-button-default uk-margin-right"
           type="button"
@@ -48,6 +54,15 @@
         </button>
         <div uk-dropdown="pos: top-right">
           <ul class="uk-nav uk-dropdown-nav">
+            <li class=""><a href="/">Home</a></li>
+            <li class="uk-active"><a href="/login">Login</a></li>
+            <li><a href="/register">Register</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="uk-navbar-right uk-visible@s">
+        <div>
+          <ul class="uk-navbar-nav">
             <li class=""><a href="/">Home</a></li>
             <li class="uk-active"><a href="/login">Login</a></li>
             <li><a href="/register">Register</a></li>
@@ -84,10 +99,14 @@
                   id="password"
                 />
               </div>
+              <p id="dangerText" class="uk-text-danger uk-text-small uk-hidden">
+                Wrong username or password!
+              </p>
               <input
+                id="submitButton"
                 type="button"
                 value="Login"
-                class="uk-button uk-button-large uk-button-primary"
+                class="animate__animated uk-button uk-button-large uk-button-primary"
                 onclick="sendLogin()"
               />
             </fieldset>

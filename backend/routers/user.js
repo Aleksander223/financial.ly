@@ -39,7 +39,8 @@ userRouter.post("/user/login", async (req, res) => {
 });
 
 userRouter.get("/user/status", auth, async (req, res) => {
-  res.send(req.user);
+  console.log(req.user);
+  res.status(200).send(req.user);
 });
 
 module.exports = userRouter;

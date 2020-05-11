@@ -21,8 +21,11 @@
       crossorigin="anonymous"
     ></script>
 
+     <!-- Cookie -->
+     <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+
     <!-- Custom scripts -->
-    <script src="/res/scripts/login.js"></script>
+    <script src="/res/scripts/dash.js"></script>
   </head>
 
   <body>
@@ -35,23 +38,15 @@
       <div class="uk-navbar-left">
         <a class="uk-navbar-item uk-logo" href="#">financial.ly</a>
       </div>
-
-      <div class="uk-navbar-right">
-        <button
-          class="uk-button uk-button-default uk-margin-right"
-          type="button"
-        >
-          <span uk-icon="menu"></span>
-        </button>
-        <div uk-dropdown="pos: top-right">
-          <ul class="uk-nav uk-dropdown-nav">
-            <li class="uk-active"><a href="/">Home</a></li>
-            <li class=""><a href="/login">Login</a></li>
-            <li><a href="/register">Register</a></li>
-          </ul>
-        </div>
+      <div class="uk-navbar-right uk-visible@s">
+        <div>
+          <button class="uk-button uk-button-default uk-margin-right" onclick="signOut()">Sign out</button>
       </div>
     </nav>
-    <h2>Logged in</h2>
+    <div uk-grid class="uk-flex-center uk-margin">
+      <div>
+        <h2>Hello, <span id="username"></span>!</h2>
+      </div>
+    </div>
   </body>
 </html>
