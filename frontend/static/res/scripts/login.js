@@ -79,5 +79,7 @@ async function sendRegister() {
     body: JSON.stringify(data),
   });
 
-  console.log(await response.json());
+  res = await response.json();
+  Cookies.set("Authorization", "Bearer " + res.token);
+  window.location.replace("/");
 }
