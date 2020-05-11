@@ -62,7 +62,7 @@ $(document).ready(async () => {
 
           //   return `<h5>${verb} ${full.sender}</h5><p>${full.sum}</p>`;
           return `
-          <div class="uk-card uk-card-body uk-card-default uk-grid">
+          <div class="uk-card uk-card-body uk-card-default uk-grid uk-margin">
           <div class="uk-width-1-2"><h5 class="uk-text-secondary">${verb} ${
             full.sender
           }</h3></div>
