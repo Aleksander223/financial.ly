@@ -1,0 +1,18 @@
+{
+  "data": [
+    {
+      "sender": "placeholder",
+      "receiver": "someone",
+      "wallet": "RON",
+      "sum": 69.99,
+      "timestamp": "2012-04-23T18:25:43.511Z"
+    },
+    {
+      "sender": "someone",
+      "receiver": "me",
+      "wallet": "RON",
+      "sum": -10.02,
+      "timestamp": "2018-04-23T18:25:43.511Z"
+    }
+  ]
+}
