@@ -10,6 +10,9 @@ $(document).ready(async () => {
   const userData = await userD.json();
 
   $("#username").text(userData.username);
+  $("#balance").text(userData.wallet[0].amount);
+  $("#currency").text(" " + userData.wallet[0].currency);
+  Cookies.set("sender", userData._id);
 
   table = $("#example").DataTable({
     autoWidth: false,
@@ -19,9 +22,36 @@ $(document).ready(async () => {
     info: false,
     responsive: true,
     searching: false,
-    ajax: {
-      url: "http://localhost:9999/res/mock/ron.json",
+    ajax: async (data, callback, settings) => {
+      const transactions = await fetch(
+        "http://localhost:3333/transaction/list",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
+      );
+
+      res = await transactions.json();
+
+      tableData = {
+        data: res.transactions,
+      };
+
+      console.log(tableData);
+
+      callback(tableData);
     },
+    // ajax: {
+    //   url: "htttp://localhost:3333/transaction/list",
+    //   type: "GET",
+    //   dataSrc: "",
+    //   xhrFields: {
+    //     withCredentials: true,
+    //   },
+    // },
     columns: [
       //   {
       //     data: "timestamp",
@@ -52,24 +82,32 @@ $(document).ready(async () => {
 
           const date = new Date(val);
 
-          if (full.sum < 0) {
+          // if (full.sum < 0) {
+          //   sign = "-";
+          //   verb = "To";
+          // } else {
+          //   sign = "+";
+          //   verb = "From";
+          // }
+
+          if (full.from != Cookies.get("sender")) {
             sign = "-";
             verb = "To";
+            subject = full.to.username;
           } else {
             sign = "+";
             verb = "From";
+            subject = full.from.username;
           }
 
           //   return `<h5>${verb} ${full.sender}</h5><p>${full.sum}</p>`;
           return `
           <div class="uk-card uk-card-body uk-card-default uk-grid uk-margin">
-          <div class="uk-width-1-2"><h5 class="uk-text-secondary">${verb} ${
-            full.sender
-          }</h3></div>
+          <div class="uk-width-1-2"><h5 class="uk-text-secondary">${verb} ${subject}</h3></div>
           <div class="uk-width-1-2"><h5 class="uk-text-secondary">${sign} ${Math.abs(
-            full.sum
-          )} ${full.wallet}</h3></div>
-          <div><h3 class="uk-text-meta">${moment(date).format(
+            full.amount
+          )} ${full.currency}</h3></div>
+          <div><h3 class="uk-text-meta">${moment(full.date).format(
             "HH:mm DD MMM"
           )}</h3></div>
           </div>
@@ -82,5 +120,37 @@ $(document).ready(async () => {
 
 function signOut() {
   Cookies.remove("Authorization");
+  Cookies.remove("sender");
+  window.location.reload();
+}
+
+async function sendTransaction() {
+  const from = Cookies.get("sender");
+  const to = $("#transaction_to").val();
+  const amount = $("#transaction_sum").val();
+  const currency = $("#transaction_currency").val();
+
+  const data = {
+    from,
+    to,
+    amount,
+    currency,
+  };
+
+  const transactionData = await fetch(
+    "http://localhost:3333/transaction/create/",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify(data),
+    }
+  );
+
+  console.log(transactionData.status);
+  console.log(await transactionData.json());
+
   window.location.reload();
 }

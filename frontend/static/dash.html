@@ -66,8 +66,8 @@
         <h2>Hello, <span id="username"></span>!</h2>
         
       </div>
-      <div class="uk-width-1-1" uk-grid>
-        <div class="uk-width-expand"><h3>Balance: <span id="balance" class="uk-text-primary">30</span><span id="currency" class="uk-text-primary"> RON</span></h3></div>
+      <div class="uk-width-1-1 uk-margin-remove uk-padding-remove" uk-grid>
+        <div class="uk-width-expand"><h3>Balance: <span id="balance" class="uk-text-primary"></span><span id="currency" class="uk-text-primary"></span></h3></div>
         <div class="">
             <a href="" class="uk-icon-button uk-background-primary" style="color:white" uk-icon="triangle-down"></a>
             <div uk-dropdown>
@@ -86,7 +86,30 @@
     ></table>
       </div>
     </div>
-    <button class="uk-button-danger uk-box-shadow-small uk-position-bottom-right" style="border-radius: 30px; margin-right: 30px; margin-bottom: 30px; width: 60px; height: 60px; cursor:pointer">
+    <div id="transaction-modal" uk-modal>
+      <div class="uk-modal-dialog uk-modal-body uk-flex-center uk-flex-wrap" uk-grid>
+          <div>
+          <h2 class="uk-modal-title">New transaction</h2>
+          <hr>
+          <form>
+            <div class="uk-inline uk-width-1-1 uk-margin-bottom">
+              <span class="uk-form-icon" uk-icon="icon: user"></span>
+              <input class="uk-input" placeholder="To" id="transaction_to">
+            </div>
+            <div class="uk-inline uk-width-auto uk-margin-bottom">
+              <span class="uk-form-icon" uk-icon="icon: cart"></span>
+              <input class="uk-input"  placeholder="Sum" id="transaction_sum">
+            </div>
+            <select class="uk-select uk-width-1-2 uk-margin-bottom" id="transaction_currency">
+              <option>RON</option>
+          </select>
+          </form>
+          <button class="uk-button-primary uk-button" onclick="sendTransaction()">Send</button>
+
+        </div>
+      </div>
+  </div>
+    <button uk-toggle="target: #transaction-modal" class="uk-button-danger uk-box-shadow-small uk-position-bottom-right" style="position: absolute; border-radius: 30px; margin-right: 30px; margin-bottom: 30px; width: 60px; height: 60px; cursor:pointer">
       <span uk-icon="plus"></span>
     </button>
   </body>
