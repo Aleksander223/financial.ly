@@ -36,6 +36,11 @@ const transactionSchema = new Schema(
                 },
                 message: 'amount need to be > 0'
             },
+        },
+
+        currency: {
+            type: String,
+            required: true,
         }
     }
 );

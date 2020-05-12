@@ -2,7 +2,7 @@
 const Transaction = require('../models/transaction.js');
 const User = require("../models/user.js");
 
-const getTransactions = function(req, resp){
+const getTransactions = async function(req, resp){
 
     await Transaction.find({})
     .populate({path:'from', select:'username'})
@@ -14,7 +14,7 @@ const getTransactions = function(req, resp){
     });
 };
 
-const addTransaction = function(req, resp){
+const addTransaction = async function(req, resp){
 
     // const IBAN = req.body.to;
     // destinationUser = await User.findOne({IBAN: IBAN}, 
@@ -25,12 +25,23 @@ const addTransaction = function(req, resp){
     transaction = new Transaction({
       from: req.body.from, // id user who makes the transaction
       to: req.body.to,  // id directly from body or looking for the user with IBAN (destination field in frontend form)
-      amount: req.body.amount // + or -. received or paid. If we want to show user transactions, we search for current user_id in list of transactions(in both fields: from and to)
+      amount: req.body.amount, // + or -. received or paid. If we want to show user transactions, we search for current user_id in list of transactions(in both fields: from and to)
+      currency: req.body.currency
     });
 
     try {
       const result = await transaction.save();
       console.log(result);
+
+      let sender = await User.findById(req.body.from);    // subtract balance from sender
+      let receiver = await User.findById(req.body.to);    // add balance to receiver
+
+      sender.wallet[0].amount -= req.body.amount;
+      receiver.wallet[0].amount += req.body.amount;
+
+      sender.save();
+      receiver.save();
+
       resp.status(200).json({status: 200, transaction: transaction});   
     } catch (err) {
         console.log(err.message)
@@ -38,7 +49,7 @@ const addTransaction = function(req, resp){
     }
 };
 
-const cancelTransaction = function(req, resp){
+const cancelTransaction = async function(req, resp){
     var currentDate = new Date();
 
     var transaction = await Transaction.findById(req.body.transactionId);
@@ -59,6 +70,6 @@ const cancelTransaction = function(req, resp){
 
 module.exports = {
     getTransactions,
-    addTransactions,
-    cancelTransactions
+    addTransaction,
+    cancelTransaction
 };

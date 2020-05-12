@@ -11,6 +11,7 @@ userRouter.post("/user/register", async (req, res) => {
       username: req.body.username,
       email: req.body.email,
       password: req.body.password,
+      wallet: [{"currency": "RON", "amount": 10000}]    // money printing machine go BRRRRRRRRRRR
     });
     await user.save();
 

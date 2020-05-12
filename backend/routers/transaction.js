@@ -7,19 +7,19 @@ const transactionController = require("../services/transactionController");
 const transactionRouter = express.Router();
 
 transactionRouter.get(
-  "/transactions",
+  "/transaction/list",
   auth,
   transactionController.getTransactions
 );
 transactionRouter.post(
-  "/createTransaction",
+  "/transaction/create",
   auth,
-  transactionController.addTransactions
+  transactionController.addTransaction
 );
 transactionRouter.post(
-  "/cancelTransaction",
+  "/transaction/cancel",
   auth,
-  transactionController.cancelTransactions
+  transactionController.cancelTransaction
 );
 
 module.exports = transactionRouter;
