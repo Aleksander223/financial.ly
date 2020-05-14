@@ -7,9 +7,14 @@ const transactionController = require("../services/transactionController");
 const transactionRouter = express.Router();
 
 transactionRouter.get(
-  "/transaction/list",
+  "/transaction/all",
   auth,
   transactionController.getTransactions
+);
+transactionRouter.get(
+  "/transaction/list",
+  auth,
+  transactionController.getUserTransactions
 );
 transactionRouter.post(
   "/transaction/create",

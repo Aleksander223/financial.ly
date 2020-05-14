@@ -15,6 +15,36 @@ const getTransactions = async function (req, resp) {
     });
 };
 
+const getUserTransactions = async function (req, resp) {
+  const currentUser = req.user;
+  var received;
+  var transferred;
+  await Transaction.find({from : currentUser._id}, { amount: 1, to: 1})
+  .exec(function (err, listOfUserTransactions) {
+    if (err) {
+      return next(err);
+    }
+    //Successful
+    console.log(listOfUserTransactions);
+    transferred = JSON.parse(JSON.stringify(listOfUserTransactions));
+    transferred.forEach(function (obj) {
+      obj.amount = obj.amount*(-1);
+    }); 
+  });
+
+  await Transaction.find({to : currentUser._id}, { amount: 1, from: 1})
+  .exec(function (err, listOfUserTransactions) {
+    if (err) {
+      return next(err);
+    }
+    //Successful
+    console.log(listOfUserTransactions);
+    received = JSON.parse(JSON.stringify(listOfUserTransactions));
+  });
+
+  resp.status(200).json({ status: 200, transferred: transferred, received: received });
+}
+
 const addTransaction = async function (req, resp) {
   // const IBAN = req.body.to;
   // destinationUser = await User.findOne({IBAN: IBAN},
@@ -76,4 +106,5 @@ module.exports = {
   getTransactions,
   addTransaction,
   cancelTransaction,
+  getUserTransactions
 };
