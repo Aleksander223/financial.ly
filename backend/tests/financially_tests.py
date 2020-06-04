@@ -93,7 +93,6 @@ def test_login_with_correct_credentials(expected_status=201):
 
 
 def test_status_with_correct_credentials(expected_status=200):
-    global correct_auth_cookie
     cookies = correct_auth_cookie
     response = requests.get(URL_backend + "/user/status/", cookies=cookies)
     if expected_status != response.status_code:
@@ -109,6 +108,109 @@ def test_status_with_wrong_credentials(expected_status=404):
         print("cookies: {} ,status code: {} & response: {}\
               ".format(cookies, response.status_code, response.text))
     return expected_status == response.status_code
+
+
+def test_transaction_all_with_correct_credentials(expected_status=200):
+    cookies = correct_auth_cookie
+    response = requests.get(URL_backend + "/transaction/all/", cookies=cookies)
+    response_status = json.loads(response.text)['status']
+    if expected_status != response_status:
+        print("cookies: {} ,status code: {} & response: {}\
+              ".format(cookies, response_status, response.text))
+    return expected_status == response_status
+
+
+def test_transaction_all_with_wrong_credentials(expected_status=404):
+    cookies = {"Authorization": "Bearer " + random_generator(100)}
+    response = requests.get(URL_backend + "/transaction/all/", cookies=cookies)
+    if expected_status != response.status_code:
+        print("cookies: {} ,status code: {} & response: {}\
+              ".format(cookies, response.status_code, response.text))
+    return expected_status == response.status_code
+
+
+def test_transaction_list_with_correct_credentials(expected_status=200):
+    cookies = correct_auth_cookie
+    response = requests.get(URL_backend + "/transaction/list/",
+                            cookies=cookies)
+    response_status = json.loads(response.text)['status']
+    if expected_status != response_status:
+        print("cookies: {} ,status code: {} & response: {}\
+              ".format(cookies, response_status, response.text))
+    return expected_status == response_status
+
+
+def test_transaction_list_with_wrong_credentials(expected_status=404):
+    cookies = {"Authorization": "Bearer " + random_generator(100)}
+    response = requests.get(URL_backend + "/transaction/list/",
+                            cookies=cookies)
+    if expected_status != response.status_code:
+        print("cookies: {} ,status code: {} & response: {}\
+              ".format(cookies, response.status_code, response.text))
+    return expected_status == response.status_code
+
+
+def test_transaction_currencies_with_correct_credentials(expected_status=200):
+    cookies = correct_auth_cookie
+    response = requests.get(URL_backend + "/transaction/currencies/",
+                            cookies=cookies)
+    response_status = json.loads(response.text)['status']
+    if expected_status != response_status:
+        print("cookies: {} ,status code: {} & response: {}\
+              ".format(cookies, response_status, response.text))
+    return expected_status == response_status
+
+
+def test_transaction_currencies_with_wrong_credentials(expected_status=404):
+    cookies = {"Authorization": "Bearer " + random_generator(100)}
+    response = requests.get(URL_backend + "/transaction/currencies/",
+                            cookies=cookies)
+    if expected_status != response.status_code:
+        print("cookies: {} ,status code: {} & response: {}\
+              ".format(cookies, response.status_code, response.text))
+    return expected_status == response.status_code
+
+
+def test_transaction_create_with_wrong_credentials(expected_status=404):
+    cookies = {"Authorization": "Bearer " + random_generator(100)}
+    response = requests.post(URL_backend + "/transaction/create/",
+                             cookies=cookies)
+    if expected_status != response.status_code:
+        print("cookies: {} ,status code: {} & response: {}\
+              ".format(cookies, response.status_code, response.text))
+    return expected_status == response.status_code
+
+
+def test_transaction_cancel_with_wrong_credentials(expected_status=404):
+    cookies = {"Authorization": "Bearer " + random_generator(100)}
+    response = requests.post(URL_backend + "/transaction/cancel/",
+                             cookies=cookies)
+    if expected_status != response.status_code:
+        print("cookies: {} ,status code: {} & response: {}\
+              ".format(cookies, response.status_code, response.text))
+    return expected_status == response.status_code
+
+# Not implemented yet
+# def test_transaction_cancel_with_correct_credentials(expected_status=200):
+#     cookies = correct_auth_cookie
+#     response = requests.post(URL_backend + "/transaction/cancel/",
+#                              cookies=cookies)
+#     response_status = json.loads(response.text)['status']
+#     if expected_status != response_status:
+#         print("cookies: {} ,status code: {} & response: {}\
+#               ".format(cookies, response_status, response.text))
+#     return expected_status == response_status
+
+
+# def test_transaction_create_with_correct_credentials(expected_status=200):
+#     cookies = correct_auth_cookie
+#     response = requests.post(URL_backend + "/transaction/create/",
+#                              cookies=cookies)
+#     response_status = json.loads(response.text)['status']
+#     if expected_status != response_status:
+#         print("cookies: {} ,status code: {} & response: {}\
+#               ".format(cookies, response_status, response.text))
+#     return expected_status == response_status
 
 
 for key, value in list(locals().items()):
