@@ -27,7 +27,7 @@ def test_login_with_wrong_credentials(wrong_email=random_generator(),
     payload = {"Origin": URL_frontend, "Content-Type": "application/json"}
     response = requests.post(URL_backend + "/user/login/", headers=payload,
                              data='{"email":"' + wrong_email + '","password":"\
-                             ' + wrong_password + '"}')
+' + wrong_password + '"}')
     if expected_status != response.status_code:
         print("payload: {} ,status code: {} & response: {}\
               ".format(payload, response.status_code, response.text))
@@ -56,9 +56,7 @@ def test_register_with_correct_credentials(correct_email=correct_email,
     return expected_status == response.status_code
 
 
-def test_register_with_the_same_email(correct_email=correct_email,
-                                      correct_password=correct_password,
-                                      expected_status=400):
+def test_register_with_the_same_email(expected_status=400):
     data = {'username': random_generator(),
             'email': correct_email,
             'password': correct_password,
@@ -78,29 +76,33 @@ def test_register_with_the_same_email(correct_email=correct_email,
     return expected_status == response.status_code
 
 
-def test_login_with_correct_credentials(correct_email=correct_email,
-                                        correct_password=correct_password,
-                                        expected_status=201):
+def test_login_with_correct_credentials(expected_status=201):
     global correct_auth_cookie
     payload = {"Origin": URL_frontend, "Content-Type": "application/json"}
     session = requests.session()
     response = session.post(URL_backend + "/user/login/", headers=payload,
-                            data='{"email":"' + correct_email + '","\
-                            password":"' + correct_password + '"}')
+                            data='{"email":"' + correct_email + '\
+","password":"' + correct_password + '"}')
     if expected_status != response.status_code:
         print("payload: {} ,status code: {} & response: {}\
               ".format(payload, response.status_code, response.text))
-
     correct_auth_cookie = {"Authorization": "Bearer \
-                           " + response.text.split('token":"')[1][:-2]}
+" + response.text.split('token":"')[1][:-2]}
     return expected_status == response.status_code
 
 
-def test_status_with_correct_credentials(correct_email=correct_email,
-                                         correct_password=correct_password,
-                                         expected_status=200):
+def test_status_with_correct_credentials(expected_status=200):
     global correct_auth_cookie
     cookies = correct_auth_cookie
+    response = requests.get(URL_backend + "/user/status/", cookies=cookies)
+    if expected_status != response.status_code:
+        print("cookies: {} ,status code: {} & response: {}\
+              ".format(cookies, response.status_code, response.text))
+    return expected_status == response.status_code
+
+
+def test_status_with_wrong_credentials(expected_status=404):
+    cookies = {"Authorization": "Bearer " + random_generator(100)}
     response = requests.get(URL_backend + "/user/status/", cookies=cookies)
     if expected_status != response.status_code:
         print("cookies: {} ,status code: {} & response: {}\
@@ -111,11 +113,17 @@ def test_status_with_correct_credentials(correct_email=correct_email,
 for key, value in list(locals().items()):
     if callable(value):
         if key.startswith("test"):
-            if value():
-                print(colored(key, 'blue'))
-            else:
+            try:
+                if value():
+                    print(colored(key, 'blue'))
+                else:
+                    print(colored(key, 'red'))
+                    not_ok += 1
+            except Exception as e:
                 print(colored(key, 'red'))
+                print(colored("ERROR: " + str(e), 'red'))
                 not_ok += 1
+                continue
 
 if not_ok == 0:
     print(colored('Tests successfull passed', 'green'))
