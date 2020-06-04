@@ -16,6 +16,11 @@ transactionRouter.get(
   auth,
   transactionController.getUserTransactions
 );
+transactionRouter.get(
+  "/transaction/currencies",
+  auth,
+  transactionController.getCurrencies
+);
 transactionRouter.post(
   "/transaction/create",
   auth,
