@@ -216,6 +216,7 @@ def test_transaction_cancel_with_wrong_credentials(expected_status=404):
 for key, value in list(locals().items()):
     if callable(value):
         if key.startswith("test"):
+            key = key.replace("test_", "").replace("_", " ")
             try:
                 if value():
                     print(colored(key, 'blue'))
