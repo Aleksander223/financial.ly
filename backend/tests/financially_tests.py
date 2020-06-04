@@ -2,20 +2,21 @@
 import requests
 import json
 import random
-import string
-from termcolor import colored
+import string  # used for random passwords and random users
+from termcolor import colored  # used for colored prints
+"""
+All future tests should be only functions that start with "test"
+"""
+
+
+def random_generator(length=10):  # random string
+    return ''.join(random.choice(string.ascii_letters) for i in
+                   range(length))
 
 
 URL_frontend = "http://localhost:9999"
 URL_backend = "http://localhost:3333"
-
-
-def random_generator(length=10):
-    return ''.join(random.choice(string.ascii_lowercase) for i in
-                   range(length))
-
-
-correct_email = random_generator(4) + "@test.test"
+correct_email = random_generator(4) + "@test.test"  # suppose this is valid
 correct_password = "test"
 correct_auth_cookie = None
 not_ok = 0
