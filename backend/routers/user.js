@@ -44,4 +44,14 @@ userRouter.get("/user/status", auth, async (req, res) => {
   res.status(200).send(req.user);
 });
 
+userRouter.get("/user/all", auth, async (req, res) => {
+  try {
+    let users = await User.find({})
+
+    res.status(200).send(users)
+  } catch (error) {
+    res.status(400).send("Error")
+  }
+})
+
 module.exports = userRouter;

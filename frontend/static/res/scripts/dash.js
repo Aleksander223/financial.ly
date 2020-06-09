@@ -167,10 +167,50 @@ $(document).ready(async () => {
   let search = $("#example_filter input")
   search.removeClass()
   search.addClass("uk-search-input")
+  search.attr('id', 'searchForm')
 
   let container = $("#example_filter")
   container.removeClass()
   container.addClass(["uk-search", "uk-width-auto", "uk-search-default", "uk-margin-remove", "uk-padding-remove"])
+
+  new autoComplete({
+    data: {
+      src: async () => {
+        const q = await fetch("http://localhost:3333/user/all/", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        });
+
+        const data = await q.json()
+        return data
+      },
+      key: ["username"],
+      cache: false
+    },
+    selector: "#searchForm",
+    resultsList: {
+        render: true,
+        destination: document.querySelector("#searchForm"),
+        position: "afterend",
+        element: "ul"
+    },
+    maxResults: 5,
+    threshold: 1,
+    resultItem: {
+        content: (data, source) => {
+          // <span class="uk-badge">${data.match}</span>
+            source.innerHTML= `
+            <div class="uk-card uk-card-body uk-card-default uk-remove-padding uk-remove-margin uk-position-fixed uk-position-z-index">
+              <p class="uk-text uk-remove-padding uk-remove-margin">${data.match}</p>
+            </div>
+            `;
+        },
+        element: "Custom"
+    }
+})
 });
 
 function signOut() {
