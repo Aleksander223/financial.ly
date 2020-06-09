@@ -36,15 +36,32 @@ $(document).ready(async () => {
 
       res = await transactions.json();
 
+      let trc = res.transactions
+
       if (!res.transactions) {
-        res.transactions = [];
+        trc = []
       }
 
+      trc = trc.sort((a, b) => {
+        let x = new Date(a.date)
+        let y = new Date(b.date)
+
+        if (x < y) {
+          return 1;
+        } else if (x > y) {
+          return -1
+        } else {
+          return 0;
+        }
+      })
+
       tableData = {
-        data: res.transactions,
+        data: trc,
       };
 
       console.log(tableData);
+
+      
 
       callback(tableData);
     },
