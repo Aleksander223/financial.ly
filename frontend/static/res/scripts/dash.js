@@ -1,3 +1,18 @@
+async function getName(_id) {
+  let url = "http://localhost:3333/user/name/" + _id
+  const username = await fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    credentials: "include"
+  })
+
+  const res = await username.json()
+
+  return res.username
+}
+
 $(document).ready(async () => {
   const userD = await fetch("http://localhost:3333/user/status/", {
     method: "GET",
@@ -14,6 +29,7 @@ $(document).ready(async () => {
   $("#currency").text(" " + userData.wallet[0].currency);
   Cookies.set("sender", userData._id);
 
+
   table = $("#example").DataTable({
     autoWidth: false,
     lengthChange: false,
@@ -21,10 +37,10 @@ $(document).ready(async () => {
     ordering: false,
     info: false,
     responsive: true,
-    searching: false,
+    searching: true,
     ajax: async (data, callback, settings) => {
       const transactions = await fetch(
-        "http://localhost:3333/transaction/list",
+        "http://localhost:3333/transaction/list/",
         {
           method: "GET",
           headers: {
@@ -36,11 +52,37 @@ $(document).ready(async () => {
 
       res = await transactions.json();
 
+      let trc = res.transactions
+
+      if (!res.transactions) {
+        trc = []
+      }
+
+      trc = trc.sort((a, b) => {
+
+        let x = new Date(a.date)
+        let y = new Date(b.date)
+
+
+        if (x < y) {
+          return 1;
+        } else {
+          return -1
+        }
+      })
+
+      for(let transaction of trc) {
+          transaction.from = await getName(transaction.from)
+          transaction.to = await getName(transaction.to)
+      }
+
       tableData = {
-        data: res.transactions,
+        data: trc,
       };
 
       console.log(tableData);
+
+      
 
       callback(tableData);
     },
@@ -52,6 +94,10 @@ $(document).ready(async () => {
     //     withCredentials: true,
     //   },
     // },
+    oLanguage: {
+      sEmptyTable: `<h3>No transactions</h3>`,
+      sZeroRecords: `<h3>No transactions found</h3>`
+    },
     columns: [
       //   {
       //     data: "timestamp",
@@ -90,14 +136,15 @@ $(document).ready(async () => {
           //   verb = "From";
           // }
 
-          if (full.from != Cookies.get("sender")) {
+          if (full.from == userData.username) {
             sign = "-";
             verb = "To";
-            subject = full.to.username;
+            subject = full.to
           } else {
+
             sign = "+";
             verb = "From";
-            subject = full.from.username;
+            subject = full.from
           }
 
           //   return `<h5>${verb} ${full.sender}</h5><p>${full.sum}</p>`;
@@ -116,6 +163,14 @@ $(document).ready(async () => {
       },
     ],
   });
+
+  let search = $("#example_filter input")
+  search.removeClass()
+  search.addClass("uk-search-input")
+
+  let container = $("#example_filter")
+  container.removeClass()
+  container.addClass(["uk-search", "uk-width-auto", "uk-search-default", "uk-margin-remove", "uk-padding-remove"])
 });
 
 function signOut() {
