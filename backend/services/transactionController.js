@@ -15,16 +15,6 @@ const getTransactions = async function (req, resp) {
     });
 };
 
-const getCurrencies = async function (req, resp){
-  var currencies = [];
-  const currentUser = req.user;
-  // aici nu sunt sigur ca ar trebui sa fie currentUser(liniile 22,23)
-  for(j=0; j<currentUser.wallet.length; j++){
-    currencies.push(currentUser.wallet[j].currency);
-  }
-  resp.status(200).json({ status: 200, currencies: currencies });
-}
-
 const getUserTransactions = async function (req, resp) {
   const currentUser = req.user;
   let received = [];
@@ -93,8 +83,8 @@ const addTransaction = async function (req, resp) {
     if(i === sender.wallet.length || j === receiver.wallet.length)
       resp.status(400).json({ status: 400, message: "You can't make transaction. Invalid currency."});
     
-    sender.wallet[i].amount -= req.body.amount;
-    receiver.wallet[j].amount += req.body.amount;
+    sender.wallet[i].amount -= Number(req.body.amount);
+    receiver.wallet[j].amount += Number(req.body.amount);
 
     sender.save();
     receiver.save();
@@ -135,5 +125,4 @@ module.exports = {
   addTransaction,
   cancelTransaction,
   getUserTransactions,
-  getCurrencies
 };

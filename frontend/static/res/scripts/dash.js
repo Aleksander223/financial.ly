@@ -1,3 +1,18 @@
+async function getName(_id) {
+  let url = "http://localhost:3333/user/name/" + _id
+  const username = await fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    credentials: "include"
+  })
+
+  const res = await username.json()
+
+  return res.username
+}
+
 $(document).ready(async () => {
   const userD = await fetch("http://localhost:3333/user/status/", {
     method: "GET",
@@ -13,6 +28,7 @@ $(document).ready(async () => {
   $("#balance").text(userData.wallet[0].amount);
   $("#currency").text(" " + userData.wallet[0].currency);
   Cookies.set("sender", userData._id);
+
 
   table = $("#example").DataTable({
     autoWidth: false,
@@ -43,17 +59,22 @@ $(document).ready(async () => {
       }
 
       trc = trc.sort((a, b) => {
+
         let x = new Date(a.date)
         let y = new Date(b.date)
 
+
         if (x < y) {
           return 1;
-        } else if (x > y) {
-          return -1
         } else {
-          return 0;
+          return -1
         }
       })
+
+      for(let transaction of trc) {
+          transaction.from = await getName(transaction.from)
+          transaction.to = await getName(transaction.to)
+      }
 
       tableData = {
         data: trc,
@@ -114,14 +135,15 @@ $(document).ready(async () => {
           //   verb = "From";
           // }
 
-          if (full.from == Cookies.get("sender")) {
+          if (full.from == userData.username) {
             sign = "-";
             verb = "To";
-            subject = full.to;
+            subject = full.to
           } else {
+
             sign = "+";
             verb = "From";
-            subject = full.from;
+            subject = full.from
           }
 
           //   return `<h5>${verb} ${full.sender}</h5><p>${full.sum}</p>`;
