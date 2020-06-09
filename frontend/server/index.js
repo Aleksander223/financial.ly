@@ -1,9 +1,11 @@
+require('dotenv').config({path: __dirname + '/.env'})
+
 const express = require("express");
 const staticRouter = require("./routers/static");
 const cookieParser = require("cookie-parser");
 const db = require("./../../backend/db/db");
 
-const port = process.env.PORT || 6969;
+const port = process.env.PORT || 9999;
 const dbUrl = process.env.DBURL;
 
 const cors = require("cors");

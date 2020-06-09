@@ -1,3 +1,5 @@
+require('dotenv').config({path: __dirname + '/.env'})
+
 const express = require("express");
 const validator = require("validator");
 const db = require("./db/db.js");
