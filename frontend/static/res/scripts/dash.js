@@ -37,7 +37,7 @@ $(document).ready(async () => {
     ordering: false,
     info: false,
     responsive: true,
-    searching: false,
+    searching: true,
     ajax: async (data, callback, settings) => {
       const transactions = await fetch(
         "http://localhost:3333/transaction/list/",
@@ -95,7 +95,8 @@ $(document).ready(async () => {
     //   },
     // },
     oLanguage: {
-      sEmptyTable: `<h3>No transactions</h3>`
+      sEmptyTable: `<h3>No transactions</h3>`,
+      sZeroRecords: `<h3>No transactions found</h3>`
     },
     columns: [
       //   {
@@ -162,6 +163,14 @@ $(document).ready(async () => {
       },
     ],
   });
+
+  let search = $("#example_filter input")
+  search.removeClass()
+  search.addClass("uk-search-input")
+
+  let container = $("#example_filter")
+  container.removeClass()
+  container.addClass(["uk-search", "uk-width-auto", "uk-search-default", "uk-margin-remove", "uk-padding-remove"])
 });
 
 function signOut() {

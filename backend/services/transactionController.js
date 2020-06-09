@@ -55,6 +55,10 @@ const addTransaction = async function (req, resp) {
   console.log(req.body);
   const currentUser = req.user;
 
+  if (req.body.to == req.body.from) {
+    return resp.status(400).json({ status: 400, message: "Sender is receiver!" });
+  }
+
   transaction = new Transaction({
     from: currentUser._id, // id user who makes the transaction
     to: req.body.to, // id directly from body or looking for the user with IBAN (destination field in frontend form)
