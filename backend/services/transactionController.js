@@ -27,32 +27,32 @@ const getCurrencies = async function (req, resp){
 
 const getUserTransactions = async function (req, resp) {
   const currentUser = req.user;
-  var received;
-  var transferred;
-  await Transaction.find({from : currentUser._id}, { amount: 1, to: 1})
+  let received = [];
+  let transferred = [];
+  let c = await Transaction.find({from : currentUser._id})
   .exec(function (err, listOfUserTransactions) {
     if (err) {
       return next(err);
     }
     //Successful
-    console.log(listOfUserTransactions);
     transferred = JSON.parse(JSON.stringify(listOfUserTransactions));
-    transferred.forEach(function (obj) {
-      obj.amount = obj.amount*(-1);
-    }); 
   });
 
-  await Transaction.find({to : currentUser._id}, { amount: 1, from: 1})
+  let d = await Transaction.find({to : currentUser._id})
   .exec(function (err, listOfUserTransactions) {
     if (err) {
       return next(err);
     }
     //Successful
-    console.log(listOfUserTransactions);
     received = JSON.parse(JSON.stringify(listOfUserTransactions));
+
+    let transactions = transferred.concat(received)
+
+    console.log(transactions)
+
+    resp.status(200).json({ status: 200, transactions });
   });
 
-  resp.status(200).json({ status: 200, transferred: transferred, received: received });
 }
 
 const addTransaction = async function (req, resp) {
@@ -66,7 +66,7 @@ const addTransaction = async function (req, resp) {
   const currentUser = req.user;
 
   transaction = new Transaction({
-    from: req.body.currentUser._id, // id user who makes the transaction
+    from: currentUser._id, // id user who makes the transaction
     to: req.body.to, // id directly from body or looking for the user with IBAN (destination field in frontend form)
     amount: req.body.amount, // + or -. received or paid. If we want to show user transactions, we search for current user_id in list of transactions(in both fields: from and to)
     currency: req.body.currency,

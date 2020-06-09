@@ -24,7 +24,7 @@ $(document).ready(async () => {
     searching: false,
     ajax: async (data, callback, settings) => {
       const transactions = await fetch(
-        "http://localhost:3333/transaction/list",
+        "http://localhost:3333/transaction/list/",
         {
           method: "GET",
           headers: {
@@ -35,6 +35,10 @@ $(document).ready(async () => {
       );
 
       res = await transactions.json();
+
+      if (!res.transactions) {
+        res.transactions = [];
+      }
 
       tableData = {
         data: res.transactions,
@@ -52,6 +56,9 @@ $(document).ready(async () => {
     //     withCredentials: true,
     //   },
     // },
+    oLanguage: {
+      sEmptyTable: `<h3>No transactions</h3>`
+    },
     columns: [
       //   {
       //     data: "timestamp",
@@ -90,14 +97,14 @@ $(document).ready(async () => {
           //   verb = "From";
           // }
 
-          if (full.from != Cookies.get("sender")) {
+          if (full.from == Cookies.get("sender")) {
             sign = "-";
             verb = "To";
-            subject = full.to.username;
+            subject = full.to;
           } else {
             sign = "+";
             verb = "From";
-            subject = full.from.username;
+            subject = full.from;
           }
 
           //   return `<h5>${verb} ${full.sender}</h5><p>${full.sum}</p>`;
