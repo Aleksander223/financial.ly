@@ -1,3 +1,5 @@
+require('dotenv').config({path: __dirname + '/.env'})
+
 const express = require("express");
 const validator = require("validator");
 const db = require("./db/db.js");
@@ -5,6 +7,8 @@ const userRouter = require("./routers/user.js");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const transactionRouter = require("./routers/transaction.js");
+const walletRouter = require("./routers/wallet.js")
+const userInfoRouter = require("./routers/userInfo.js")
 
 const port = process.env.PORT || 6969;
 const dbUrl = process.env.DBURL;
@@ -35,8 +39,9 @@ async function main() {
   );
 
   app.use(userRouter);
-
   app.use(transactionRouter);
+  app.use(walletRouter);
+  app.use(userInfoRouter);
 
   app.listen(port, () => console.log(`Server running on port ${port}`));
 }

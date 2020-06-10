@@ -79,7 +79,7 @@
           />
         </div>
         <div class="uk-width-1-2@s">
-          <input class="uk-input" type="email" placeholder="Email" id="email" />
+          <input class="uk-input" type="email" placeholder="Email" id="email" pattern="[a-zA-Z]+@[a-zA-Z]+.[a-zA-Z]{1,4}" />
         </div>
         <div class="uk-width-1-2@s">
           <input
@@ -103,6 +103,7 @@
             type="tel"
             placeholder="Telephone"
             id="telephone"
+            pattern="[0-9]{10}"
           />
         </div>
 
@@ -421,7 +422,7 @@
         </div>
 
         <div class="uk-width-1-2@s">
-          <input class="uk-input" type="text" placeholder="Zipcode" id="zip" />
+          <input class="uk-input" type="text" placeholder="Zipcode" id="zip" pattern="[0-9]{6}"/>
         </div>
         <div>
           <input

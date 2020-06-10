@@ -6,7 +6,6 @@ function deleteWarnings() {
 
 $(document).ready(() => {
   $("#email").click(() => {
-    console.log("hello");
     deleteWarnings();
   });
 
@@ -70,7 +69,7 @@ async function sendRegister() {
     street,
     zip,
   };
-
+  // console.log(JSON.stringify(data));
   const response = await fetch("http://localhost:3333/user/register/", {
     method: "POST",
     headers: {
