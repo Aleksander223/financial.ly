@@ -1,9 +1,12 @@
 const User = require("../models/user.js");
 
 const getName = async function(req, resp) {
-    const id = req.params.id;
+    const id = req;
+    if (req)
+        if(req.params)
+            if (req.params.id)
+    id = req.params.id;
 
-    console.log(id)
 
     try {
         let u = await User.findById(id); 

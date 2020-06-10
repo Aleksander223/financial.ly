@@ -1,5 +1,14 @@
 const Transaction = require("../models/transaction.js");
 const User = require("../models/user.js");
+const nodemailer = require('nodemailer');
+const lol = require('./userInfoController');
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'financiallysuport@gmail.com',
+    pass: 'parolacompletrandom123'
+  }
+});
 
 const getTransactions = async function (req, resp) {
   await Transaction.find({})
@@ -62,8 +71,22 @@ const addTransaction = async function (req, resp) {
   //     if (err) return handleError(err);
   //   });
 
-  console.log(req.body);
   const currentUser = req.user;
+
+  var mailOptions = {
+  from: 'financiallysuport@tutanota.com',
+  to: req.body.to,                        // receiver's email
+  subject: 'New transaction',
+  text: 'You just received ' + req.body.amount + " " + req.body.currency + " from user " + currentUser.username 
+  };
+
+  transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+      console.log(error);
+    } else {
+      console.log('Email sent: ' + info.response);
+    }
+  });
 
   if (req.body.to == req.body.from) {
     return resp.status(400).json({ status: 400, message: "Sender is receiver!" });
