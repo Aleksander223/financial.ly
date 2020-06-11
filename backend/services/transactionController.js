@@ -23,16 +23,6 @@ const getTransactions = async function (req, resp) {
     });
 };
 
-const getCurrencies = async function (req, resp){
-  var currencies = [];
-  const currentUser = req.user;
-
-  for(j=0; j<receiver.wallet.length; j++){
-    currencies.push(areceiver.wallet[j].currency);
-  }
-  resp.status(200).json({ status: 200, currencies: currencies });
-}
-
 const getUserTransactions = async function (req, resp) {
   const currentUser = req.user;
   let received = [];
