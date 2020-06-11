@@ -155,17 +155,6 @@ def test_transaction_list_with_wrong_credentials(expected_status=404):
     return expected_status == response.status_code
 
 
-def test_transaction_currencies_with_correct_credentials(expected_status=200):
-    cookies = correct_auth_cookie
-    response = requests.get(URL_backend + "/transaction/currencies/",
-                            cookies=cookies, timeout=default_test_time)
-    response_status = json.loads(response.text)['status']
-    if expected_status != response_status:
-        print("cookies: {} ,status code: {} & response: {}\
-              ".format(cookies, response_status, response.text))
-    return expected_status == response_status
-
-
 def test_transaction_currencies_with_wrong_credentials(expected_status=404):
     cookies = {"Authorization": "Bearer " + random_generator(100)}
     response = requests.get(URL_backend + "/transaction/currencies/",
