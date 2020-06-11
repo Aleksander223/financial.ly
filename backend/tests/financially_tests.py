@@ -226,7 +226,7 @@ for key, value in list(locals().items()):
                 continue
 
 if not_ok == 0:
-    print(colored('Tests successfull passed', 'green'), attrs=['bold'])
+    print(colored('Tests successfull passed', 'green', attrs=['bold']))
 else:
     print(colored('{} test(s) failed'.format(not_ok), 'red',
                   attrs=['bold', 'blink', 'reverse']))
