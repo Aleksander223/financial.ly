@@ -11,16 +11,6 @@ transactionRouter.get(
   auth,
   transactionController.getTransactions
 );
-transactionRouter.get(
-  "/transaction/list",
-  auth,
-  transactionController.getUserTransactions
-);
-transactionRouter.get(
-  "/transaction/currencies",
-  auth,
-  transactionController.getCurrencies
-);
 transactionRouter.post(
   "/transaction/create",
   auth,
@@ -30,6 +20,12 @@ transactionRouter.post(
   "/transaction/cancel",
   auth,
   transactionController.cancelTransaction
+);
+
+transactionRouter.get(
+  "/transaction/list",
+  auth,
+  transactionController.getUserTransactions
 );
 
 module.exports = transactionRouter;
