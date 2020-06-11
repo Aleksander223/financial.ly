@@ -9,10 +9,14 @@ const cors = require("cors");
 const transactionRouter = require("./routers/transaction.js");
 const walletRouter = require("./routers/wallet.js")
 const userInfoRouter = require("./routers/userInfo.js")
+const fs = require('fs');
+const morgan = require('morgan');
+const path = require('path')
 
 const port = process.env.PORT || 6969;
 const dbUrl = process.env.DBURL;
 const corsUrl = process.env.CORS;
+const accessLogStream = fs.createWriteStream(path.join(__dirname, 'financial.ly.log'), {flags: 'a'})
 
 async function main() {
   try {
@@ -24,6 +28,7 @@ async function main() {
   }
 
   const app = express();
+  app.use(morgan(':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent" :req[header]', { stream: accessLogStream }));
 
   app.use(cookieParser());
   app.use(express.json());
