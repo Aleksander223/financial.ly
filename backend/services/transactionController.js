@@ -1,11 +1,10 @@
 const Transaction = require("../models/transaction.js");
 const User = require("../models/user.js");
 const nodemailer = require('nodemailer');
-const lol = require('./userInfoController');
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'financiallysuport@gmail.com',
+    user: 'financiallysuppport@gmail.com',
     pass: 'parolacompletrandom123'
   }
 });
@@ -74,7 +73,7 @@ const addTransaction = async function (req, resp) {
   const currentUser = req.user;
 
   var mailOptions = {
-  from: 'financiallysuport@tutanota.com',
+  from: 'Financial.ly support',
   to: req.body.to,                        // receiver's email
   subject: 'New transaction',
   text: 'You just received ' + req.body.amount + " " + req.body.currency + " from user " + currentUser.username 
