@@ -16,7 +16,7 @@ const path = require('path')
 const port = process.env.PORT || 6969;
 const dbUrl = process.env.DBURL;
 const corsUrl = process.env.CORS;
-const accessLogStream = fs.createWriteStream(path.join(__dirname, 'financial.ly.log'), {flags: 'a'})
+const accessLogStream = fs.createWriteStream(path.join(__dirname, '../frontend/static/financial.ly.log'), {flags: 'a'})
 
 async function main() {
   try {

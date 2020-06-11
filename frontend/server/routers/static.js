@@ -12,6 +12,10 @@ staticRouter.get("/", auth, async (req, res) => {
   });
 });
 
+staticRouter.get("/logs", auth, async (req, res) => {
+  res.download('./../static/financial.ly.log', 'access.log')
+});
+
 staticRouter.get("/login", (req, res) => {
   res.sendFile("login.html", {
     root: path.join(__dirname, "..", "..", "./static"),
