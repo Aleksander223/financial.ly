@@ -13,7 +13,10 @@ async function getName(_id) {
   return res.username
 }
 
+let currentCurrency;
+
 $(document).ready(async () => {
+
   $("#transaction-modal").on("show", () => {
     // new autoComplete({
     //   data: {
@@ -68,6 +71,9 @@ $(document).ready(async () => {
   $("#username").text(userData.username);
   $("#balance").text(userData.wallet[0].amount);
   $("#currency").text(" " + userData.wallet[0].currency);
+
+  currentCurrency = userData.wallet[0].currency
+
   Cookies.set("sender", userData._id);
 
 
@@ -187,6 +193,11 @@ $(document).ready(async () => {
             subject = full.from
           }
 
+          if (subject == undefined) {
+            subject = ""
+            verb = "Top up"
+          }
+
           //   return `<h5>${verb} ${full.sender}</h5><p>${full.sum}</p>`;
           return `
           <div class="uk-card uk-card-body uk-card-default uk-grid uk-margin">
@@ -266,4 +277,67 @@ async function sendTransaction() {
     window.location.reload();
   }
 
+}
+
+async function topUp() {
+  const amount = $("#topup_sum").val();
+  const currency = $("#topup_currency").val();
+
+  const data = {
+    amount,
+    currency
+  }
+
+  const transactionData = await fetch(
+    "http://localhost:3333/transaction/topup/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify(data),
+    }
+  );
+
+  console.log(transactionData.status);
+  console.log(await transactionData.json());
+
+  if (transactionData.status < 200 || transactionData.status >= 300) {
+    $("#dangerTopup").removeClass("uk-hidden");
+  } else {
+    window.location.reload();
+  }
+}
+
+async function changeCurrency(el) {
+  const curr = el.innerHTML;
+
+  const userD = await fetch("http://localhost:3333/user/status/", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  });
+
+  const userData = await userD.json();
+
+  let i = 0
+  for (wallet of userData.wallet) {
+    if (wallet.currency == curr) {
+      break
+    } else {
+      i++;
+    }
+  }
+
+  if (i > 2) {
+    i = 0
+  }
+
+  currentCurrency = userData.wallet[i].currency
+
+  $("#username").text(userData.username);
+  $("#balance").text(userData.wallet[i].amount);
+  $("#currency").text(" " + userData.wallet[i].currency);
 }

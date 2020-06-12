@@ -28,4 +28,10 @@ transactionRouter.get(
   transactionController.getUserTransactions
 );
 
+transactionRouter.post(
+  "/transaction/topup",
+  auth,
+  transactionController.topUp
+)
+
 module.exports = transactionRouter;

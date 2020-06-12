@@ -69,8 +69,9 @@
         <a href="" class="uk-icon-button uk-background-primary" style="color:white" uk-icon="triangle-down"></a>
         <div uk-dropdown>
           <ul class="uk-nav uk-dropdown-nav">
-            <button class="uk-button">RON</button>
-            <button class="uk-button">EUR</button>
+            <button class="uk-button" onclick="changeCurrency(this)">RON</button>
+            <button class="uk-button" onclick="changeCurrency(this)">€</button>
+            <button class="uk-button" onclick="changeCurrency(this)">$</button>
           </ul>
         </div>
       </div>
@@ -95,6 +96,8 @@
           </div>
           <select class="uk-select uk-width-1-2 uk-margin-bottom" id="transaction_currency">
             <option>RON</option>
+            <option>€</option>
+            <option>$</option>
           </select>
         </form>
         <button class="uk-button-primary uk-button" onclick="sendTransaction()">Send</button>
@@ -104,14 +107,72 @@
       </div>
     </div>
   </div>
+  <div id="currency-modal" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body uk-flex-center uk-flex-wrap" uk-grid>
+      <div>
+        <h2 class="uk-modal-title">Currency exchange</h2>
+        <hr>
+        <form id="exchange-form">
+          <label for="exchange_from">From</label>
+          <select class="uk-select uk-width-1-3 uk-margin-bottom" id="exchange_from">
+            <option>RON</option>
+            <option>€</option>
+            <option>$</option>
+          </select>
+          <label for="exchange_to">To</label>
+          <select class="uk-select uk-width-1-3 uk-margin-bottom" id="exchange_to">
+            <option>RON</option>
+            <option>€</option>
+            <option>$</option>
+          </select>
+          <div class="uk-inline uk-width-auto uk-margin-bottom">
+            <span class="uk-form-icon" uk-icon="icon: cart"></span>
+            <input class="uk-input" placeholder="Sum" id="exchange_sum" required pattern="([0-9]+)(\.[0-9]+)?">
+          </div>
+        </form>
+        <button class="uk-button-primary uk-button" onclick="exchangeCurrency()">Exchange</button>
+        <p id="dangerTransaction" class="uk-text-danger uk-text-small uk-hidden">Error: please check your details and
+          try again</p>
+
+      </div>
+    </div>
+  </div>
+  <div id="topup-modal" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body uk-flex-center uk-flex-wrap" uk-grid>
+      <div>
+        <h2 class="uk-modal-title">Top up</h2>
+        <hr>
+        <form id="topup-form">
+          <div class="uk-inline uk-width-auto uk-margin-bottom">
+            <span class="uk-form-icon" uk-icon="icon: cart"></span>
+            <input class="uk-input" placeholder="Sum" id="topup_sum" required pattern="([0-9]+)(\.[0-9]+)?">
+          </div>
+          <select class="uk-select uk-width-1-2 uk-margin-bottom" id="topup_currency">
+            <option>RON</option>
+            <option>€</option>
+            <option>$</option>
+          </select>
+        </form>
+        <button class="uk-button-primary uk-button" onclick="topUp()">Top up</button>
+        <p id="dangerTopup" class="uk-text-danger uk-text-small uk-hidden">Error: please check your details and
+          try again</p>
+
+      </div>
+    </div>
+  </div>
   <button uk-toggle="target: #transaction-modal" class="uk-button-danger uk-box-shadow-small"
     style="position: fixed; border-radius: 30px; right: 30px; bottom: 40px; width: 60px; height: 60px; cursor:pointer">
-    <span uk-icon="plus"></span>
+    <span uk-icon="expand"></span>
   </button>
 
-  <button uk-toggle="target: #transaction-modal" class="uk-button-primary uk-box-shadow-small"
+  <button uk-toggle="target: #currency-modal" class="uk-button-primary uk-box-shadow-small"
     style="position: fixed; border-radius: 30px; right: 120px; bottom: 40px; width: 60px; height: 60px; cursor:pointer">
     <span uk-icon="refresh"></span>
+  </button>
+
+  <button uk-toggle="target: #topup-modal" class="uk-button-secondary uk-box-shadow-small"
+    style="position: fixed; border-radius: 30px; right: 210px; bottom: 40px; width: 60px; height: 60px; cursor:pointer">
+    <span uk-icon="plus"></span>
   </button>
 
 </body>

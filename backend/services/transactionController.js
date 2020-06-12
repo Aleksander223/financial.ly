@@ -70,6 +70,52 @@ const getUserTransactions = async function (req, resp) {
 
 }
 
+const topUp = async function (req, resp) {
+  const currentUser = req.user;
+
+  req.body.amount = Number(req.body.amount)
+
+  const from = "000000000000"
+  const to = currentUser._id
+
+  transaction = new Transaction({
+    from, // id user who makes the transaction
+    to, // id directly from body or looking for the user with IBAN (destination field in frontend form)
+    amount: req.body.amount, // + or -. received or paid. If we want to show user transactions, we search for current user_id in list of transactions(in both fields: from and to)
+    currency: req.body.currency,
+  });
+
+
+  try {
+    const result = await transaction.save();
+    console.log(result);
+
+    let receiver = await User.findById(to); // add balance to receiver
+
+    let j;
+
+    for (j = 0; j < receiver.wallet.length; j++) {
+      if (receiver.wallet[j].currency === transaction.currency)
+        break;
+    }
+
+    receiver.wallet[j].amount += Number(req.body.amount);
+
+    receiver.save();
+
+    resp.status(200).json({
+      status: 200,
+      transaction: transaction
+    });
+  } catch (err) {
+    console.log(err.message);
+    resp.status(400).json({
+      status: 400,
+      message: err.message
+    });
+  }
+}
+
 const addTransaction = async function (req, resp) {
   // const IBAN = req.body.to;
   // destinationUser = await User.findOne({IBAN: IBAN},
@@ -191,4 +237,5 @@ module.exports = {
   addTransaction,
   cancelTransaction,
   getUserTransactions,
+  topUp
 };

@@ -11,12 +11,24 @@ userRouter.post("/user/register", async (req, res) => {
       username: req.body.username,
       email: req.body.email,
       password: req.body.password,
-      wallet: [{"currency": "RON", "amount": 10000}]    // money printing machine go BRRRRRRRRRRR
+      wallet: [{
+        "currency": "RON",
+        "amount": 0
+      }, {
+        "currency": "€",
+        "amount": 0
+      }, {
+        "currency": "$",
+        "amount": 0
+      }] // money printing machine go BRRRRRRRRRRR
     });
     await user.save();
 
     const token = await user.generateAuthToken();
-    res.status(201).send({ user, token });
+    res.status(201).send({
+      user,
+      token
+    });
   } catch (error) {
     console.log(error);
     res.status(400).send(error);
@@ -29,10 +41,15 @@ userRouter.post("/user/login", async (req, res) => {
     const password = req.body.password;
     const user = await User.findByCredentials(email, password);
     if (!user) {
-      res.status(401).send({ error: "Wrong credentials." });
+      res.status(401).send({
+        error: "Wrong credentials."
+      });
     }
     const token = await user.generateAuthToken();
-    res.status(201).send({ user, token });
+    res.status(201).send({
+      user,
+      token
+    });
   } catch (error) {
     console.log(error);
     res.status(400).send(error);
