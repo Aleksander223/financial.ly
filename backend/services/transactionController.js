@@ -1,6 +1,7 @@
 const Transaction = require("../models/transaction.js");
 const User = require("../models/user.js");
 const nodemailer = require('nodemailer');
+const e = require("express");
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
@@ -11,15 +12,24 @@ const transporter = nodemailer.createTransport({
 
 const getTransactions = async function (req, resp) {
   await Transaction.find({})
-    .populate({ path: "from", select: "username" })
-    .populate({ path: "to", select: "username" }) // populate 'from' ad 'to' property with 'username' property from user model
+    .populate({
+      path: "from",
+      select: "username"
+    })
+    .populate({
+      path: "to",
+      select: "username"
+    }) // populate 'from' ad 'to' property with 'username' property from user model
     .exec(function (err, listOfTransactions) {
       if (err) {
         return next(err);
       }
       //Successful
       console.log(listOfTransactions);
-      resp.status(200).json({ status: 200, transactions: listOfTransactions });
+      resp.status(200).json({
+        status: 200,
+        transactions: listOfTransactions
+      });
     });
 };
 
@@ -27,29 +37,36 @@ const getUserTransactions = async function (req, resp) {
   const currentUser = req.user;
   let received = [];
   let transferred = [];
-  let c = await Transaction.find({from : currentUser._id})
-  .exec(function (err, listOfUserTransactions) {
-    if (err) {
-      return next(err);
-    }
-    //Successful
-    transferred = JSON.parse(JSON.stringify(listOfUserTransactions));
-  });
+  let c = await Transaction.find({
+      from: currentUser._id
+    })
+    .exec(function (err, listOfUserTransactions) {
+      if (err) {
+        return next(err);
+      }
+      //Successful
+      transferred = JSON.parse(JSON.stringify(listOfUserTransactions));
+    });
 
-  let d = await Transaction.find({to : currentUser._id})
-  .exec(function (err, listOfUserTransactions) {
-    if (err) {
-      return next(err);
-    }
-    //Successful
-    received = JSON.parse(JSON.stringify(listOfUserTransactions));
+  let d = await Transaction.find({
+      to: currentUser._id
+    })
+    .exec(function (err, listOfUserTransactions) {
+      if (err) {
+        return next(err);
+      }
+      //Successful
+      received = JSON.parse(JSON.stringify(listOfUserTransactions));
 
-    let transactions = transferred.concat(received)
+      let transactions = transferred.concat(received)
 
-    console.log(transactions)
+      console.log(transactions)
 
-    resp.status(200).json({ status: 200, transactions });
-  });
+      resp.status(200).json({
+        status: 200,
+        transactions
+      });
+    });
 
 }
 
@@ -62,23 +79,26 @@ const addTransaction = async function (req, resp) {
 
   const currentUser = req.user;
 
+  req.body.amount = Number(req.body.amount)
+
+  req.body.amount = req.body.amount.toFixed(2)
+
+  const email = await User.findOne({
+    _id: req.body.to
+  }).email
+
   var mailOptions = {
-  from: 'Financial.ly support',
-  to: req.body.to,                        // receiver's email
-  subject: 'New transaction',
-  text: 'You just received ' + req.body.amount + " " + req.body.currency + " from user " + currentUser.username 
+    from: 'Financial.ly support',
+    to: email, // receiver's email
+    subject: 'New transaction',
+    text: 'You just received ' + req.body.amount + " " + req.body.currency + " from user " + currentUser.username
   };
 
-  transporter.sendMail(mailOptions, function(error, info){
-    if (error) {
-      console.log(error);
-    } else {
-      console.log('Email sent: ' + info.response);
-    }
-  });
-
   if (req.body.to == req.body.from) {
-    return resp.status(400).json({ status: 400, message: "Sender is receiver!" });
+    return resp.status(400).json({
+      status: 400,
+      message: "Sender is receiver!"
+    });
   }
 
   transaction = new Transaction({
@@ -88,37 +108,55 @@ const addTransaction = async function (req, resp) {
     currency: req.body.currency,
   });
 
+
   try {
     const result = await transaction.save();
     console.log(result);
+
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
+    });
 
     let sender = await User.findById(req.body.from); // subtract balance from sender
     let receiver = await User.findById(req.body.to); // add balance to receiver
 
     let i, j;
-    for(i=0; i<sender.wallet.length; i++){
-      if(sender.wallet[i].currency === transaction.currency)
+    for (i = 0; i < sender.wallet.length; i++) {
+      if (sender.wallet[i].currency === transaction.currency)
         break;
     }
 
-    for(j=0; j<receiver.wallet.length; j++){
-      if(receiver.wallet[j].currency === transaction.currency)
+    for (j = 0; j < receiver.wallet.length; j++) {
+      if (receiver.wallet[j].currency === transaction.currency)
         break;
     }
 
-    if(i === sender.wallet.length || j === receiver.wallet.length)
-      resp.status(400).json({ status: 400, message: "You can't make transaction. Invalid currency."});
-    
+    if (i === sender.wallet.length || j === receiver.wallet.length)
+      resp.status(400).json({
+        status: 400,
+        message: "You can't make transaction. Invalid currency."
+      });
+
     sender.wallet[i].amount -= Number(req.body.amount);
     receiver.wallet[j].amount += Number(req.body.amount);
 
     sender.save();
     receiver.save();
 
-    resp.status(200).json({ status: 200, transaction: transaction });
+    resp.status(200).json({
+      status: 200,
+      transaction: transaction
+    });
   } catch (err) {
     console.log(err.message);
-    resp.status(400).json({ status: 400, message: err.message });
+    resp.status(400).json({
+      status: 400,
+      message: err.message
+    });
   }
 };
 
@@ -138,7 +176,9 @@ const cancelTransaction = async function (req, resp) {
 
     // Need to modify amount from sender and receiver account 
 
-    resp.status(200).json({ status: 200 });
+    resp.status(200).json({
+      status: 200
+    });
   } else
     resp.status(400).json({
       status: 400,

@@ -14,6 +14,47 @@ async function getName(_id) {
 }
 
 $(document).ready(async () => {
+  $("#transaction-modal").on("show", () => {
+    // new autoComplete({
+    //   data: {
+    //     src: async () => {
+    //       const q = await fetch("http://localhost:3333/user/all/", {
+    //         method: "GET",
+    //         headers: {
+    //           "Content-Type": "application/json",
+    //         },
+    //         credentials: "include",
+    //       });
+
+    //       const data = await q.json()
+    //       return data
+    //     },
+    //     key: ["username"],
+    //     cache: false
+    //   },
+    //   selector: "#transactionTo",
+    //   resultsList: {
+    //     render: true,
+    //     destination: document.querySelector("#transactionTo"),
+    //     position: "afterend",
+    //     element: "ul"
+    //   },
+    //   maxResults: 5,
+    //   threshold: 1,
+    //   resultItem: {
+    //     content: (data, source) => {
+    //       source.innerHTML = `
+    //         <div class="uk-card uk-card-body uk-card-default uk-remove-padding uk-remove-margin uk-position-relative uk-position-z-index">
+    //           <p class="uk-text uk-remove-padding uk-remove-margin">${data.match}</p>
+    //         </div>
+    //         `;
+    //     },
+    //     element: "Custom"
+    //   }
+    // })
+  })
+
+
   const userD = await fetch("http://localhost:3333/user/status/", {
     method: "GET",
     headers: {
@@ -40,8 +81,7 @@ $(document).ready(async () => {
     searching: true,
     ajax: async (data, callback, settings) => {
       const transactions = await fetch(
-        "http://localhost:3333/transaction/list/",
-        {
+        "http://localhost:3333/transaction/list/", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -71,9 +111,9 @@ $(document).ready(async () => {
         }
       })
 
-      for(let transaction of trc) {
-          transaction.from = await getName(transaction.from)
-          transaction.to = await getName(transaction.to)
+      for (let transaction of trc) {
+        transaction.from = await getName(transaction.from)
+        transaction.to = await getName(transaction.to)
       }
 
       tableData = {
@@ -82,7 +122,7 @@ $(document).ready(async () => {
 
       console.log(tableData);
 
-      
+
 
       callback(tableData);
     },
@@ -173,44 +213,7 @@ $(document).ready(async () => {
   container.removeClass()
   container.addClass(["uk-search", "uk-width-auto", "uk-search-default", "uk-margin-remove", "uk-padding-remove"])
 
-  new autoComplete({
-    data: {
-      src: async () => {
-        const q = await fetch("http://localhost:3333/user/all/", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-        });
 
-        const data = await q.json()
-        return data
-      },
-      key: ["username"],
-      cache: false
-    },
-    selector: "#searchForm",
-    resultsList: {
-        render: true,
-        destination: document.querySelector("#searchForm"),
-        position: "afterend",
-        element: "ul"
-    },
-    maxResults: 5,
-    threshold: 1,
-    resultItem: {
-        content: (data, source) => {
-          // <span class="uk-badge">${data.match}</span>
-            source.innerHTML= `
-            <div class="uk-card uk-card-body uk-card-default uk-remove-padding uk-remove-margin uk-position-fixed uk-position-z-index">
-              <p class="uk-text uk-remove-padding uk-remove-margin">${data.match}</p>
-            </div>
-            `;
-        },
-        element: "Custom"
-    }
-})
 });
 
 function signOut() {
@@ -221,9 +224,20 @@ function signOut() {
 
 async function sendTransaction() {
   const from = Cookies.get("sender");
-  const to = $("#transaction_to").val();
+  const to_username = $("#transaction_to").val();
   const amount = $("#transaction_sum").val();
   const currency = $("#transaction_currency").val();
+
+  let to_id = await fetch("http://localhost:3333/user/id/" + to_username, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  });
+
+  let to = await to_id.json()
+  to = to._id
 
   const data = {
     from,
@@ -233,8 +247,7 @@ async function sendTransaction() {
   };
 
   const transactionData = await fetch(
-    "http://localhost:3333/transaction/create/",
-    {
+    "http://localhost:3333/transaction/create/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -247,5 +260,10 @@ async function sendTransaction() {
   console.log(transactionData.status);
   console.log(await transactionData.json());
 
-  window.location.reload();
+  if (transactionData.status < 200 || transactionData.status >= 300) {
+    $("#dangerTransaction").removeClass("uk-hidden");
+  } else {
+    window.location.reload();
+  }
+
 }
