@@ -49,13 +49,13 @@
   <nav class="uk-navbar-container uk-margin uk-light" uk-navbar data-uk-sticky style="background-color: #1e87f0;">
     <div class="uk-navbar-left">
       <a class="uk-navbar-item uk-logo" href="#">financial.ly</a>
-      <a class="uk-navbar-item uk-text-large" href="#">Rates</a>
-      <a class="uk-navbar-item uk-text-large" href="#">Users</a>
-      <a class="uk-navbar-item uk-text-large" href="/financial.ly.log" download>Logs</a>
+      <a class="uk-navbar-item uk-text" href="#" uk-toggle="target: #rate-modal">Rates</a>
+      <a class="uk-navbar-item uk-text" href="#" uk-toggle="target: #user-modal">Users</a>
+      <a class="uk-navbar-item uk-text" href="/financial.ly.log" download>Logs</a>
     </div>
     <div class="uk-navbar-right uk-visible">
       <div>
-        <button class="uk-button uk-button-default uk-margin-right" onclick="signOut()">Sign out</button>
+        <button class="uk-button uk-button-default uk-margin-small-right" onclick="signOut()">Log out</button>
       </div>
   </nav>
   <div uk-grid class="uk-flex-center uk-margin@s uk-padding uk-width-1-2@l uk-flex-wrap uk-align-center">
@@ -163,6 +163,30 @@
       </div>
     </div>
   </div>
+  <div id="rate-modal" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body uk-flex-center uk-flex-wrap" uk-grid>
+      <div>
+        <h2 class="uk-modal-title">Rates</h2>
+        <hr>
+        <div id="rates">
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="user-modal" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body uk-flex-center uk-flex-wrap" uk-grid>
+      <div>
+        <h2 class="uk-modal-title">Users</h2>
+        <hr>
+        <ul class="uk-list" id="users">
+
+        </ul>
+      </div>
+    </div>
+  </div>
+
   <button uk-toggle="target: #transaction-modal" class="uk-button-danger uk-box-shadow-small"
     style="position: fixed; border-radius: 30px; right: 30px; bottom: 40px; width: 60px; height: 60px; cursor:pointer">
     <span uk-icon="expand"></span>

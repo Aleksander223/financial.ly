@@ -39,7 +39,51 @@ async function cancelTransaction(transactionId) {
 
 let currentCurrency;
 
+async function getRates() {
+  let r = await fetch("http://localhost:3333/wallet/rates", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json"
+    }
+  })
+
+  let rates = await r.json()
+
+
+  let rt = $("#rates")
+  rt.append(`<h5>EUR->RON: ${rates.rates["RON"]}<h5>`)
+  rt.append(`<h5>EUR->USD: ${rates.rates["USD"]}<h5>`)
+}
+
+async function getUsers() {
+  let r = await fetch("http://localhost:3333/user/all", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    credentials: "include"
+  })
+
+  let users = await r.json()
+
+  users = users.map(user => user.username)
+
+  let rt = $("#users")
+
+  for (user of users) {
+    rt.append(`<li>${user}</li>`)
+  }
+}
+
 $(document).ready(async () => {
+
+  $("#rate-modal").on("show", async () => {
+    await getRates()
+  })
+
+  $("#user-modal").on("show", async () => {
+    await getUsers()
+  })
 
   $("#transaction-modal").on("show", () => {
     // new autoComplete({
