@@ -13,6 +13,30 @@ async function getName(_id) {
   return res.username
 }
 
+async function cancelTransaction(transactionId) {
+  let url = "http://localhost:3333/transaction/cancel/"
+  console.log(transactionId)
+
+  let d = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      transactionId
+    }),
+    credentials: "include"
+  })
+
+  let res = await d.json()
+
+  if (res.status != 200) {
+    alert("Cannot revert transaction")
+  } else {
+    window.location.reload()
+  }
+}
+
 let currentCurrency;
 
 $(document).ready(async () => {
@@ -201,10 +225,13 @@ $(document).ready(async () => {
           //   return `<h5>${verb} ${full.sender}</h5><p>${full.sum}</p>`;
           return `
           <div class="uk-card uk-card-body uk-card-default uk-grid uk-margin">
-          <div class="uk-width-1-2"><h5 class="uk-text-secondary">${verb} ${subject}</h3></div>
-          <div class="uk-width-1-2"><h5 class="uk-text-secondary">${sign} ${Math.abs(
+          <div class="uk-width-1-2"><h5 class="uk-text-secondary">${verb} ${subject}</h5></div>
+          <div class="uk-width-1-3"><h5 class="uk-text-secondary">${sign} ${Math.abs(
             full.amount
-          )} ${full.currency}</h3></div>
+          )} ${full.currency}</h5></div>
+          <div class="uk-width-auto">
+          <a href="javascript:cancelTransaction('${full._id}');" uk-icon="icon: close"></a>
+          </div>
           <div><h3 class="uk-text-meta">${moment(full.date).format(
             "HH:mm DD MMM"
           )}</h3></div>

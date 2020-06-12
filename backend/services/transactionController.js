@@ -211,18 +211,61 @@ const cancelTransaction = async function (req, resp) {
 
   var transaction = await Transaction.findById(req.body.transactionId);
 
+  let from = transaction.from;
+  let to = transaction.to;
+
+  let amount = transaction.amount;
+
+  let currency = transaction.currency;
+
+  let topup = false
+
+  if (from == "303030303030303030303030") {
+    topup = true
+  }
+
   // To calculate the no. of hours between two dates
   var DifferenceInHours =
     Math.abs(currentDate - transaction.date) / (1000 * 60 * 60);
 
   if (DifferenceInHours <= 12) {
-    Transaction.deleteOne({
-      _id: new mongodb.ObjectID(req.body.transactionId),
+    await Transaction.deleteOne({
+      _id: req.body.transactionId,
     }); // id must be of type ObjectId
 
     // Need to modify amount from sender and receiver account 
 
-    resp.status(200).json({
+    let j;
+
+    let receiver = await User.findById(to)
+
+    console.log(receiver)
+
+    for (j = 0; j < receiver.wallet.length; j++) {
+      if (receiver.wallet[j].currency === currency)
+        break;
+    }
+
+    receiver.wallet[j].amount -= Number(amount)
+
+    await receiver.save()
+
+    if (!topup) {
+      let sender = await User.findById(from)
+
+      let i;
+
+      for (i = 0; i < sender.wallet.length; i++) {
+        if (sender.wallet[i].currency === currency)
+          break;
+      }
+
+      sender.wallet[i].amount += Number(amount)
+
+      await sender.save()
+    }
+
+    return resp.status(200).json({
       status: 200
     });
   } else
