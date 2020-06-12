@@ -380,6 +380,39 @@ async function topUp() {
   }
 }
 
+async function exchangeCurrency() {
+  const from = $("#exchange_from").val();
+  const to = $("#exchange_to").val();
+
+  const amount = $("#exchange_sum").val();
+
+  const data = {
+    from,
+    to,
+    amount
+  }
+
+  const transactionData = await fetch(
+    "http://localhost:3333/wallet/exchange/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify(data),
+    }
+  );
+
+  console.log(transactionData.status);
+  console.log(await transactionData.json());
+
+  if (transactionData.status < 200 || transactionData.status >= 300) {
+    $("#dangerExchange").removeClass("uk-hidden");
+  } else {
+    window.location.reload();
+  }
+}
+
 async function changeCurrency(el) {
   const curr = el.innerHTML;
 

@@ -190,8 +190,8 @@ const addTransaction = async function (req, resp) {
     sender.wallet[i].amount -= Number(req.body.amount);
     receiver.wallet[j].amount += Number(req.body.amount);
 
-    sender.save();
-    receiver.save();
+    await sender.save();
+    await receiver.save();
 
     resp.status(200).json({
       status: 200,
