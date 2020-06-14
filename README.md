@@ -3,7 +3,7 @@
 An online banking platform.
 
 
-Demo: TODO
+Demo: https://youtu.be/LFm0IsA831M
 
 Architecture Diagram
 ![Architecture](https://i.imgur.com/vwkxrvO.jpg)
