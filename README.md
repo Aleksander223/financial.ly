@@ -25,3 +25,5 @@ Backlog (updated)
 11. As a user I want to see currency exchange rates
 12. As a user I want to revert transactions (<12 hours)
 13. As a user I want to see logs
+
+Bug tacking: See Jira (shared with lab professor)
